@@ -1,0 +1,11 @@
+.venv/
+.env
+.codex
+__pycache__/
+*.pyc
+
+data/runtime/*
+data/training/sft/
+data/training/runs/
+test/*.png
+configs/raw_subtitle

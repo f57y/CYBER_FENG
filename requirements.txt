@@ -1,0 +1,12 @@
+# 统一运行与训练依赖；torch 固定为当前项目已验证可用的 2.10.0+cu128，如你的 CUDA 环境不同请自行调整。
+--extra-index-url https://download.pytorch.org/whl/cu128
+
+gradio>=6,<7
+torch==2.10.0+cu128
+transformers==4.57.6
+huggingface-hub>=0.34.0,<1.0
+accelerate==1.13.0
+peft==0.18.1
+bitsandbytes==0.49.2
+sentencepiece==0.2.1
+safetensors==0.7.0
