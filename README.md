@@ -167,17 +167,45 @@
 <a id="paths"></a>
 ## 推荐使用路径
 
-以下主命令默认以 Linux / WSL2 终端为例。
+以下主命令默认以 Linux / WSL2 终端为例。建议先完成一次通用准备，再按路线 1 / 2 / 3 选择后续步骤。
 
 平台说明：
 
 | 平台 / 项目 | 说明 |
 | --- | --- |
 | Linux / WSL2 | 下面三条路线的命令可以直接参考 |
-| Windows | 可以运行，但命令需要换成 PowerShell 写法，并且仍然要求 NVIDIA CUDA 环境 |
+| Windows | 可以运行，但命令需要换成 PowerShell 写法，并且仍然要求 NVIDIA CUDA 环境，下面也有快速启动参考 |
 | macOS | 由于CUDA的限制，当前版本不能直接运行本地 LoRA 推理，也不能直接运行训练 |
 | `python` / `python3` | 如果你的环境里 `python` 已经指向 Python 3，可以直接用 `python`；如果只有 `python3`，把下面示例里的 `python` 替换成 `python3` 就行 |
 | Hugging Face 下载 | 下面涉及 Hugging Face 下载的路线默认使用 `hf` 命令；如果你的环境里还没有它，先执行 `pip install "huggingface-hub>=0.34.0,<1.0"` |
+
+### 环境要求
+
+- Python 3.10+
+- 一套可用的本地 CUDA + Transformers + LoRA 环境
+- 如果你准备下载已发布的 LoRA 或 SFT 数据，建议先确认本机可以使用 `hf` 命令
+
+### 通用准备
+
+下面这些步骤三条路线都只需要做一次：
+
+```bash
+git clone https://github.com/f57y/CYBER_FENG.git
+cd CYBER_FENG
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+cp .env_example .env
+```
+
+说明：
+
+- `requirements.txt` 已经包含运行和训练所需依赖。
+- 其中 `torch` 固定为当前项目验证可用的 `2.10.0+cu128`。
+- 如果你的 CUDA 环境不同，请修改 [requirements.txt](requirements.txt) 中的 `torch` 版本或安装源。
+- 如果你更习惯把参数写进配置文件，后面三条路线都可以配合 [.env_example](.env_example) 使用。
 
 <details>
 <summary><strong>Windows PowerShell 快速启动参考</strong></summary>
@@ -315,22 +343,20 @@ python run_app.py
 > [!TIP]
 > 适合谁：完全不想自己训练，只想把项目拉下来、下载你已经发布好的权重，然后尽快在自己电脑上跑起来。
 
-快速启动命令：
+完成上面的通用准备后，继续执行：
 
 ```bash
-git clone https://github.com/f57y/CYBER_FENG.git
-cd CYBER_FENG
-
-# 1) 安装项目依赖
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-# 2) 下载你发布的权重文件
+# 1) 下载发布的权重文件
 mkdir -p resources/adapters/fengge-lora
 hf download yukeef57/cyber-feng-lora --local-dir resources/adapters/fengge-lora
 
-# 3) 加载权重并启动推理
+# 2) 二选一：
+# 方式 A：把下面三项写进 .env
+# CYBER_FENG_MODEL_MODE=local_transformers_lora
+# CYBER_FENG_LOCAL_ADAPTER_PATH=resources/adapters/fengge-lora
+# CYBER_FENG_LOCAL_BASE_MODEL_NAME=Qwen/Qwen2.5-7B-Instruct
+#
+# 方式 B：临时指定并直接启动
 CYBER_FENG_MODEL_MODE=local_transformers_lora \
 CYBER_FENG_LOCAL_ADAPTER_PATH=resources/adapters/fengge-lora \
 CYBER_FENG_LOCAL_BASE_MODEL_NAME=Qwen/Qwen2.5-7B-Instruct \
@@ -345,16 +371,9 @@ python run_app.py
 > [!TIP]
 > 适合谁：想自己体验“下载现成数据 -> 启动训练 -> 加载自己训出来的权重 -> 启动应用”这一整套流程的人。
 
-快速启动命令：
+完成上面的通用准备后，继续执行：
 
 ```bash
-git clone https://github.com/f57y/CYBER_FENG.git
-cd CYBER_FENG
-
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
 # 下载发布的清洗后训练数据
 mkdir -p data/training/sft
 hf download yukeef57/cyber-feng-sft --repo-type dataset --local-dir data/training/sft
@@ -400,16 +419,9 @@ python run_app.py
 > [!TIP]
 > 适合谁：已经不满足于现成数据，准备自己从直播回放、字幕、转录文本里提取更高质量样本，然后做长期迭代的人。
 
-快速启动命令：
+完成上面的通用准备后，继续执行：
 
 ```bash
-git clone https://github.com/f57y/CYBER_FENG.git
-cd CYBER_FENG
-
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
 # 第一步：手动把样本整理进模板
 # configs/lora_qa_template.jsonl
 # configs/lora_monologue_template.jsonl
@@ -497,38 +509,9 @@ Cyber_Feng/
 └── README.md
 ```
 
-## 环境要求
-
-- Python 3.10+
-- 一套可用的本地 CUDA + Transformers + LoRA 环境
-
-## 安装
-
-先创建虚拟环境并安装统一依赖：
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-说明：
-
-- `requirements.txt` 已经包含运行和训练所需依赖。
-- 其中 `torch` 固定为当前项目验证可用的 `2.10.0+cu128`。
-- 如果你的 CUDA 环境不同，请修改 [requirements.txt](requirements.txt) 中的 `torch` 版本或安装源。
-- 如果你的环境里 `python` 就是 Python 3，也可以把这里的 `python3` 换成 `python`。
-- 更细的训练安装说明见 [scripts/README.md](scripts/README.md)。
-
 ## 配置说明
 
-先复制根目录示例文件：
-
-```bash
-cp .env_example .env
-```
-
-然后按你的路线修改 `.env`。优先参考 [.env_example](.env_example)。
+如果你已经完成前面的通用准备，这里主要用来查参数含义。优先参考 [.env_example](.env_example)。
 
 最小可用示例：
 
