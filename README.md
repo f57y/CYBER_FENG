@@ -1,8 +1,6 @@
 # Cyber Feng
 
-<p align="center">
-  <strong>赛博峰哥 / Cyber Feng</strong>
-</p>
+<h1 align="center">赛博峰哥</h1>
 
 <p align="center">
   【有的人活着，他已经死了；有的人死了，他还活着。】
