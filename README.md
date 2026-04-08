@@ -170,7 +170,7 @@
 <a id="paths"></a>
 ## 推荐使用路径
 
-以下主命令默认以 Linux / WSL2 终端为例。建议先完成一次通用准备，再按路线 1 / 2 / 3 选择后续步骤。
+以下主命令默认以 Linux / WSL2 终端为例，可直接按路线 1 / 2 / 3 选择并执行。
 
 平台说明：
 
@@ -187,28 +187,6 @@
 - Python 3.10+
 - 一套可用的本地 CUDA + Transformers + LoRA 环境
 - 如果你准备下载已发布的 LoRA 或 SFT 数据，建议先确认本机可以使用 `hf` 命令
-
-### 通用准备
-
-下面这些步骤三条路线都只需要做一次：
-
-```bash
-git clone https://github.com/f57y/CYBER_FENG.git
-cd CYBER_FENG
-
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-cp .env_example .env
-```
-
-说明：
-
-- `requirements.txt` 已经包含运行和训练所需依赖。
-- 其中 `torch` 固定为当前项目验证可用的 `2.10.0+cu128`。
-- 如果你的 CUDA 环境不同，请修改 [requirements.txt](requirements.txt) 中的 `torch` 版本或安装源。
-- 如果你更习惯把参数写进配置文件，后面三条路线都可以配合 [.env_example](.env_example) 使用。
 
 <details>
 <summary><strong>Windows PowerShell 快速启动参考</strong></summary>
@@ -344,11 +322,20 @@ python run_app.py
 ### 路线 1：我就想直接用“峰哥”
 
 > [!TIP]
-> 适合谁：完全不想自己训练，只想把项目拉下来、下载你已经发布好的权重，然后尽快在自己电脑上跑起来。
+> 适合谁：完全不想自己训练，只想把项目拉下来、下载已经发布好的权重，然后尽快在自己电脑上跑起来。
 
-完成上面的通用准备后，继续执行：
+快速启动命令：
 
 ```bash
+git clone https://github.com/f57y/CYBER_FENG.git
+cd CYBER_FENG
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+cp .env_example .env
+
 # 1) 下载发布的权重文件
 mkdir -p resources/adapters/fengge-lora
 hf download yukeef57/cyber-feng-lora --local-dir resources/adapters/fengge-lora
@@ -374,9 +361,18 @@ python run_app.py
 > [!TIP]
 > 适合谁：想自己体验“下载现成数据 -> 启动训练 -> 加载自己训出来的权重 -> 启动应用”这一整套流程的人。
 
-完成上面的通用准备后，继续执行：
+快速启动命令：
 
 ```bash
+git clone https://github.com/f57y/CYBER_FENG.git
+cd CYBER_FENG
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+cp .env_example .env
+
 # 下载发布的清洗后训练数据
 mkdir -p data/training/sft
 hf download yukeef57/cyber-feng-sft --repo-type dataset --local-dir data/training/sft
@@ -422,9 +418,18 @@ python run_app.py
 > [!TIP]
 > 适合谁：已经不满足于现成数据，准备自己从直播回放、字幕、转录文本里提取更高质量样本，然后做长期迭代的人。
 
-完成上面的通用准备后，继续执行：
+快速启动命令：
 
 ```bash
+git clone https://github.com/f57y/CYBER_FENG.git
+cd CYBER_FENG
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+cp .env_example .env
+
 # 第一步：手动把样本整理进模板
 # configs/lora_qa_template.jsonl
 # configs/lora_monologue_template.jsonl
@@ -514,7 +519,7 @@ Cyber_Feng/
 
 ## 配置说明
 
-如果你已经完成前面的通用准备，这里主要用来查参数含义。优先参考 [.env_example](.env_example)。
+这里主要用来查参数含义。优先参考 [.env_example](.env_example)。
 
 最小可用示例：
 
