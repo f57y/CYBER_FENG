@@ -8,6 +8,9 @@
     <a href="https://huggingface.co/datasets/yukeef57/cyber-feng-sft"><img src="https://img.shields.io/badge/HuggingFace-SFT%20Dataset-blue" alt="SFT Dataset"></a>
   </p>
   <p>
+    <img src="./logo.png" alt="赛博峰哥 Logo" width="340">
+  </p>
+  <p>
     <a href="#quick-look">一眼看懂</a> ·
     <a href="#samples">效果示例</a> ·
     <a href="#resources">下载资源</a> ·
